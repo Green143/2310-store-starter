@@ -82,16 +82,24 @@ const App = ()=> {
   const cartCount = cartItems.reduce((acc, item)=> {
     return acc += item.quantity;
   }, 0);
-  console.log(cartItems)
+  //console.log(cartCount)
 
   
   return (
     <div>
       <nav>
-        <Link to='/products'>Products ({ products.length })</Link>
-        <Link to='/orders'>Orders ({ orders.filter((order) => {return !order.is_cart}).length })</Link>
-        <Link to='/cart'>Cart ({ cartCount })</Link>
+        <Link to= "/products" className= {pathname === "/products" ? "selected" : ""}>Products ({ products.length })</Link>
+        <Link to= "/orders" className= {pathname === "/orders" ? "selected" : ""}>Orders ({ orders.filter((order) => {return !order.is_cart}).length })</Link>
+        <Link to= "/cart" className= {pathname === "/cart" ? "selected": ""}>Cart ({ cartCount })</Link>
       </nav>
+
+      <h1> Sneaker Luxx </h1>
+
+      <Routes>
+        <Route path="/products" element= {<Products />}/>
+        <Route path="/orders" element= {<Orders />}/>
+        <Route path="/cart" element= {<Cart/>}/>
+      </Routes>
       <div>
         <Products
           products={ products }
