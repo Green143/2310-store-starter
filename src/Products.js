@@ -9,8 +9,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
           products.map( product => {
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             return (
-              <li key={ product.id }>
-                { product.name }
+              <li key={ product.name }>
+                {product.name}
+                <img className="prodPix" src={product.img}/> Price: ${product.price}.00 Description:{product.description}
                 {
                   cartItem ? <button onClick={ ()=> updateLineItem(cartItem)}>Add Another</button>: <button onClick={ ()=> createLineItem(product)}>Add</button>
                 }

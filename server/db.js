@@ -19,6 +19,7 @@ const fetchProducts = async()=> {
   const SQL = `
     SELECT *
     FROM products
+    ORDER by name
   `;
   const response = await client.query(SQL);
   return response.rows;
@@ -26,11 +27,11 @@ const fetchProducts = async()=> {
 
 const createProduct = async(product)=> {
   const SQL = `
-    INSERT INTO products (id, name)
-    VALUES($1, $2)
+    INSERT INTO products (id, name, price, description, img)
+    VALUES($1, $2, $3, $4, $5)
     RETURNING *
   `;
-  const response = await client.query(SQL, [ uuidv4(), product.name]);
+  const response = await client.query(SQL, [ uuidv4(), product.name, product.price, product.description, product.img]);
   return response.rows[0];
 };
 
@@ -123,7 +124,10 @@ const seed = async()=> {
     CREATE TABLE products(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
-      name VARCHAR(100) UNIQUE NOT NULL
+      name VARCHAR(100) UNIQUE NOT NULL,
+      price INTEGER,
+      description VARCHAR(300),
+      img VARCHAR(900)
     );
 
     CREATE TABLE orders(
@@ -143,15 +147,15 @@ const seed = async()=> {
 
   `;
   await client.query(SQL);
-  const [foo, bar, bazz, quq] = await Promise.all([
-    createProduct({ name: 'foo' }),
-    createProduct({ name: 'bar' }),
-    createProduct({ name: 'bazz' }),
-    createProduct({ name: 'quq' }),
+  const [Nike, LV, Jordans, AirForce1] = await Promise.all([
+    createProduct({ name: 'Nike', price: 70000, description: 'Nike MAG_Back to the Future 2011', img:'https://static.standard.co.uk/s3fs-public/thumbnails/image/2019/04/08/11/nike-mag-2016-official.jpg?width=1200'}),
+    createProduct({ name: 'LV', price: 22514, description: 'Louis Vuitton Jaspers Kanye Patchwork Zen Grey Pink', img:'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS0751P-zPgnooUxCOKzIRMtw1cO58CHWsHonMElgmLLP2sKK15rW02ciI4ZLmv9udqTXGIpNHu11KAgAla6-dLfp_OBFOVy9e6G5tcz27S0vhGZ0olfOLJ'}),
+    createProduct({ name: 'Jordans', price: 10950, description:'Shoe Surgeon Air Jordan 1 High What the Designer', img: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTEnz5rrBozf9OWRF6st_cdH7X6V-MV-A4bRVAz8OnGAvzpZy37Eo45k7bVnE_-K478HoreUiStB3gT4pr0wrjSbBra3eVkqbhUlqWVCddhewRaJ1Nf3TDb&usqp=CAE' }),
+    createProduct({ name: 'AirForce1', price: 47800, description:'Nike x Louis Vuitton “Air Force 1” & Pilot Case', img:'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRLJjgFb72RwUYyIHxHvE0i9mMjdi563nKTtEJUFeGWJnhSKq2P'}),
   ]);
   let orders = await fetchOrders();
   let cart = orders.find(order => order.is_cart);
-  let lineItem = await createLineItem({ order_id: cart.id, product_id: foo.id});
+  let lineItem = await createLineItem({ order_id: cart.id, product_id: LV.id});
   lineItem.quantity++;
   await updateLineItem(lineItem);
   cart.is_cart = false;

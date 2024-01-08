@@ -7,11 +7,11 @@
 
 # requirements
 
-- [ ] Display the products name in alphabetical order
-- [ ] A product should have a price which is an integer (a 1 dollar item should have a product price of 100)
-- [ ] The price should be displayed next to the product in the products section in a currency format (a product with a price of 100 should display a price of $1.00
-- [ ] A product should have a description. The description can be lengthy. The datatype should be TEXT.
-- [ ] Show the quantity of the line items in the orders section.
+- [x] Display the products name in alphabetical order
+- [x] A product should have a price which is an integer (a 1 dollar item should have a product price of 100)
+- [x] The price should be displayed next to the product in the products section in a currency format (a product with a price of 100 should display a price of $1.00
+- [x] A product should have a description. The description can be lengthy. The datatype should be TEXT.
+- [x] Show the quantity of the line items in the orders section.
 - [ ] The total value of the items in the cart should be shown in the cart section.
 - [ ] If no items are in the cart, a message should appear which states "Add some items to your cart".
 - [ ] A user should be able to increment and decrement the number of items in their carts.

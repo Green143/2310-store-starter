@@ -10,15 +10,18 @@ const App = ()=> {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [lineItems, setLineItems] = useState([]);
+  
 
   useEffect(()=> {
     const fetchData = async()=> {
       const response = await axios.get('/api/products');
+      const alpha = response.data.sort((a,b) => a.name.localeCompare(b.name))
+      console.log(alpha)
       setProducts(response.data);
     };
     fetchData();
-  }, []);
-
+  }, []); 
+  
   useEffect(()=> {
     const fetchData = async()=> {
       const response = await axios.get('/api/orders');
@@ -46,6 +49,7 @@ const App = ()=> {
       product_id: product.id
     });
     setLineItems([...lineItems, response.data]);
+    console.log(lineItems)
   };
 
   const updateLineItem = async(lineItem)=> {
@@ -66,7 +70,9 @@ const App = ()=> {
 
   const removeFromCart = async(lineItem)=> {
     await axios.delete(`/api/lineItems/${lineItem.id}`);
+    
     setLineItems(lineItems.filter( _lineItem => _lineItem.id !== lineItem.id));
+   
   };
 
   const cartItems = lineItems.filter((lineItem) => {
@@ -76,7 +82,9 @@ const App = ()=> {
   const cartCount = cartItems.reduce((acc, item)=> {
     return acc += item.quantity;
   }, 0);
+  console.log(cartItems)
 
+  
   return (
     <div>
       <nav>
@@ -102,6 +110,7 @@ const App = ()=> {
           products = { products }
           updateOrder = { updateOrder }
           removeFromCart = { removeFromCart }
+         
         />
       </div>
     </div>
